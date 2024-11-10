@@ -1,0 +1,51 @@
+/*.header {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.header_input {
+    width: 50%;
+}
+
+.header_container {
+    padding-top: 20px;
+    height: 45px;
+}
+
+.header_nav_flexbox {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.header_nav_flexbox li{
+    width: max-content;
+    height: max-content;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 20px;
+}
+
+.header_nav_flexbox a{
+    color: black;
+}
+
+.header_checkbox {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+
+.header_checkbox span{
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.header_checkbox input{
+    vertical-align: middle;
+    margin-left: 10px;
+}*/
+
