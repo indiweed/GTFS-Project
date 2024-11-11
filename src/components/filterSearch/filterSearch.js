@@ -1,4 +1,3 @@
-import React from "react";
 import notFoundImg from '../../img/ic_baseline-search-off.svg';
 import './filterSearch.css';
 
@@ -18,32 +17,35 @@ const filterSearch = (searchTerm) => {
                 route.style.display = ''; 
             }
         });
-
+        
         if (!routeHasMatch) {
             route.style.display = 'none'; 
         }
     });
 
     const existingSpan = document.getElementById('notFoundText');
-    const existingImg = document.getElementById('notFoundImage');
     if (existingSpan) {
-        existingSpan.remove();
-        existingImg.remove();
+        const notFoundContainers = document.querySelectorAll('.notFoundContainer');
+        notFoundContainers.forEach(container => container.remove());
     }
 
     if (!found) {
-        let span = document.createElement('span');
-        let image = document.createElement('img');
-        let div = document.createElement('div');
-        div.className = 'notFoundContainer';
-        image.src = notFoundImg;
-        image.id = 'notFoundImage';
-        span.id = 'notFoundText';
-        span.textContent = 'Ничего не найдено, попробуйте изменить запрос';
-        document.querySelector('.searchMenu').appendChild(div);
-        document.querySelector('.notFoundContainer').appendChild(image);
-        document.querySelector('.notFoundContainer').appendChild(span);
+        divContainer()
     }
 };
+
+const divContainer = async () => {
+    let span = document.createElement('span');
+    let image = document.createElement('img');
+    let div = document.createElement('div');
+    div.className = 'notFoundContainer';
+    image.src = notFoundImg;
+    image.id = 'notFoundImage';
+    span.id = 'notFoundText';
+    span.textContent = 'Ничего не найдено, попробуйте изменить запрос';
+    document.querySelector('.searchMenu').appendChild(div);
+    document.querySelector('.notFoundContainer').appendChild(image);
+    document.querySelector('.notFoundContainer').appendChild(span);
+}
 
 export {filterSearch};

@@ -1,12 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import ldb from 'localdata';
 import '../Map/map.css';
-import routes from '../../feedfeed/routes.txt';
 import trips from '../../feedfeed/trips.txt';
 import shapes from '../../feedfeed/shapes.txt';
 import stops from '../../feedfeed/stops.txt';
-import ldb from 'localdata';
 import { fetchExtractData } from '../Scripts/fetchExtractData';
 import { fetchFeedData } from '../Scripts/fetchFeedData';
 import { fetchFilterData } from '../Scripts/fetchFilterData';
@@ -16,6 +15,8 @@ import { getRouteValue } from '../Scripts/getRouteValue';
 
 export default function Map() {
 
+    // Функции
+    // Добавление маршрута на карту
     const addFiniteMarkers = async (data) => {
         let markers = [];
         if (!data || data.length === 0) return;
@@ -93,6 +94,7 @@ export default function Map() {
         animateMarker()       
     };
 
+    // Отображение остановок
     const addStopsMarkers = async (routeCoord) => {
         deleteMarkers();
         if (!routeCoord || !Array.isArray(routeCoord) || routeCoord.length === 0) return;
@@ -110,7 +112,8 @@ export default function Map() {
         addClusters(geojsonData)
     };
 
-    const deleteMarkers = () => {
+    // Удаление маркеров и маршрутов
+    const deleteMarkers = async () => {
         document.querySelectorAll('.maplibregl-marker').forEach(marker => marker.remove());
 
         if (map.current.getSource('route')) {
@@ -119,7 +122,8 @@ export default function Map() {
         }
     }
 
-    const deleteClusters = () => {
+    // Удаление кластеров
+    const deleteClusters = async () => {
         if (map.current.getSource('clusterData')) {
             map.current.removeLayer('clusters');
             map.current.removeLayer('cluster-count');
@@ -128,7 +132,8 @@ export default function Map() {
         }
     };
     
-    const addClusters = (data) => {
+    // Добавление кластеров
+    const addClusters = async (data) => {
         if (!map.current.getSource('clusterData')) {
             map.current.addSource('clusterData', {
                 type: 'geojson',
@@ -189,6 +194,8 @@ export default function Map() {
         }
     };
 
+    // Карта
+    // Инициализация карты
     const mapContainer = useRef(null);
     const map = useRef(null);
     const lng = 30.312481;
@@ -196,14 +203,18 @@ export default function Map() {
     const zoom = 10;
     const API_KEY = 'MOGPDQoSiODCq4OuWQMJ';
 
+    // Функционал
     useEffect(() => {
+        // Очистка ldb
         if (map.current) return;
         ldb.clear(function () {
             console.log('Storage cleared')
         });
 
-        fetchFeedData(routes, trips, shapes)
+        // Добавление фидов в хранилище при инициализации карты
+        fetchFeedData(trips, shapes)
 
+        // Инициализация карты
         map.current = new maplibregl.Map({
             container: mapContainer.current,
             style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
@@ -212,31 +223,35 @@ export default function Map() {
         });
         map.current.addControl(new maplibregl.NavigationControl());
 
+        // Добавление обработчиков событий для элементов меню
         const elements = document.querySelectorAll('.items');
-        const checkboxEl = document.querySelectorAll('#stops');
+        const checkboxStop = document.querySelectorAll('#stops');
 
-        checkboxEl.forEach(e => {
+        // Отображение остановок
+        checkboxStop.forEach(e => {
             e.addEventListener('click', () => {
                 if (!e.checked) {
                     deleteClusters()
-                    return
                 }
-                addStops(stops, (stopsCoord) => {
+                else {
+                    addStops(stops, (stopsCoord) => {
                     addStopsMarkers(stopsCoord)
                     console.log('Остановки отображены!')
-                })
+                    })
+                }
             })
         })
 
+        // Отображение маршрутов
         elements.forEach(e => {
             e.addEventListener('click', (event) => {
+                checkboxStop.forEach(e => e.checked = false);
                 if (event.target.tagName === 'BUTTON') {
                     event.stopPropagation();
                     const routeId = getRouteValue(event.target);
-                    checkboxEl.forEach(e => e.checked = false);
-                    ldb.get('routes', function(routeValues) {
-                        fetchExtractData(routeValues, routeId, (data) => {
-                            console.log('Количество рейсов по маршруту', Object.keys(routeValues[routeId]).length)
+                    ldb.get('trips', function(tripsValues) {
+                        fetchExtractData(tripsValues, routeId, (data) => {
+                            console.log('Количество рейсов по маршруту', Object.keys(tripsValues[routeId]).length)
                             let dirId = 0;
                             if (event.target.classList.contains('direct_button')) {
                                 dirId = 1;
@@ -258,6 +273,7 @@ export default function Map() {
         });
 
     }, [lng, lat, zoom, API_KEY]);
+    
 
     return (
         <div className="map-wrap">

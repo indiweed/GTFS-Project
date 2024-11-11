@@ -2,13 +2,11 @@ import React from "react";
 import { fetchFeed } from "./fetchFeed";
 import ldb from 'localdata';
 
-const fetchFeedData = async (feed_route, feed_trips, feed_shapes) => {
+const fetchFeedData = async (feed_trips, feed_shapes) => {
         
-    const tableRoutes = await fetchFeed(feed_route);
+    //const tableRoutes = await fetchFeed(feed_route);
     const tableTrips = await fetchFeed(feed_trips);
     const tableShapes = await fetchFeed(feed_shapes);
-    
-    console.log(tableRoutes, tableTrips, tableShapes);
 
     const routeToTrips = tableTrips.reduce((acc, {route_id, trip_id, direction_id, shape_id}) => {
         if (!acc[route_id]) {
@@ -32,7 +30,7 @@ const fetchFeedData = async (feed_route, feed_trips, feed_shapes) => {
       }, {})
     console.log('tripstoshapes', tripsToShapes)
     
-    ldb.set('routes', routeToTrips)
+    ldb.set('trips', routeToTrips)
     ldb.set('shapes', tripsToShapes)
 };
 

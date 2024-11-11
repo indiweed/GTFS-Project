@@ -24,17 +24,17 @@ export default function BurgerMenu() {
                 <h1 className="subsections_title">Разделы</h1>
                 <ul>
                     <li>
-                        <div class="dropdown">
-                            <button class="dropbtn">Текущие</button>
-                            <div class="dropdown-content">
+                        <div className="dropdown">
+                            <button className="dropbtn">Текущие</button>
+                            <div className="dropdown-content">
                                 <button>Карта</button>
                             </div>
                         </div>
                     </li>
                     <li>
-                        <div class="dropdown">
-                        <button class="dropbtn">Транспорт</button>
-                            <div class="dropdown-content">
+                        <div className="dropdown">
+                        <button className="dropbtn">Транспорт</button>
+                            <div className="dropdown-content">
                                 <button>Расписание</button>
                                 <button>Перевозчики</button>
                                 <button>Отчеты</button>
@@ -43,8 +43,8 @@ export default function BurgerMenu() {
                     </li>
                     <li>
                         <div className='dropdown'>
-                        <button class="dropbtn">Личные</button>
-                            <div class="dropdown-content">
+                        <button className="dropbtn">Личные</button>
+                            <div className="dropdown-content">
                                 <button>Дом</button>
                                 <button>Работа</button>
                                 <button>Любимые места</button>
