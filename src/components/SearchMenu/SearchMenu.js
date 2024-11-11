@@ -1,10 +1,8 @@
 import React, {useState} from "react";
 import Input from "../Input/Input";
-import '../Sidebar/sidebar.css';
 import Lupa from '../../img/lupa.svg';
 import Close from '../../img/close.png';
 import './SearchMenu.css';
-import notFoundImg from '../../img/ic_baseline-search-off.svg';
 
 export default function SearchMenu() {
     const [isOpen, setIsOpen] = useState(false);
