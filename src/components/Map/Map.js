@@ -1,12 +1,14 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
 import ldb from 'localdata';
+
+import 'maplibre-gl/dist/maplibre-gl.css';
 import '../Map/map.css';
+
 import trips from '../../feedfeed/trips.txt';
 import shapes from '../../feedfeed/shapes.txt';
 import stops from '../../feedfeed/stops.txt';
+
 import { fetchExtractData } from '../Scripts/fetchExtractData';
 import { fetchFeedData } from '../Scripts/fetchFeedData';
 import { fetchFilterData } from '../Scripts/fetchFilterData';
@@ -196,7 +198,6 @@ export default function Map() {
     };
 
     // Карта
-    // Инициализация карты
     const mapContainer = useRef(null);
     const map = useRef(null);
     const lng = 30.312481;
@@ -206,8 +207,8 @@ export default function Map() {
 
     // Функционал
     useEffect(() => {
-        // Очистка ldb
         if (map.current) return;
+        // Очистка ldb
         ldb.clear(function () {
             console.log('Storage cleared')
         });
